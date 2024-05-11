@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradeFX</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Additional custom styles */
+        body {
+            padding: 20px;
+        }
+
+        #infoDisplay {
+            margin-top: 20px;
+        }
+
+        /* Chat message styling */
+        .message {
+            padding: 10px;
+            margin: 5px;
+            border-radius: 10px;
+            max-width: 70%;
+        }
+
+        .bot {
+            background-color: #f0f0f0;
+            float: left;
+        }
+
+        .user {
+            background-color: #007bff;
+            color: #fff;
+            align-self: flex-end;
+            /* Align user messages to the bottom */
+        }
+
+        /* Input field styling */
+        #userInput {
+            width: calc(100% - 20px);
+            /* Adjust input width to accommodate padding */
+            margin: 10px;
+        }
+
+        #chatLog {
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="mt-5">TradeFX</h1>
+        <form action="model/" method="GET" id="currencyForm">
+            <div class="form-group">
+                <label for="currencyPair">Choose a currency pair:</label>
+                <select class="form-control" id="currencyPair" name="currencyPair">
+                    <option value="">-- Select a currency pair --</option>
+                    <option value="EURUSD">EUR to USD</option>
+                    <!-- Add more options here -->
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary" id="submitButton" disabled>Submit</button>
+        </form>
+        <!-- Display area for sentiment score and risk -->
+        <div id="infoDisplay" class="mt-3" style="display: none;">
+            <h4>Currency Information</h4>
+            <p><strong>Currency:</strong> <span id="currency"></span></p>
+            <p><strong>Start Date (1 yr ago):</strong> <span id="start"></span></p>
+            <p><strong>End Date (Today):</strong> <span id="end"></span></p>
+            <p><strong>Sum Sentiment Score:</strong> <span id="sum"></span></p>
+            <p><strong>Average Sentiment Score:</strong> <span id="avg"></span></p>
+            <p><strong>Risk:</strong> <span id="risk"></span></p>
+            <button type="button" class="btn btn-success" id="askAdvisor" style="display: none;">Ask AI Advisor</button>
+            <button type="button" class="btn btn-success" id="getNewsButton" style="display: none;">Get 10 News</button>
+            <div id="loadingnews" style="display: none;"> <h4>Fetching latest news for you...... It may take several miniutes.</h4></div>
+            <table class="table" style="display: none;" id="newsTable">
+                <thead>
+                    <tr>
+                        <th> </th>
+                        <th>Date</th>
+                        <th>Currency</th>
+                        <th>Headline</th>
+                        <th>Brief</th>
+                        <th>Score</th>
+                        <th>AI</th>
+                    </tr>
+                </thead>
+                
+                <tbody id="newsTableBody">
+                    <!-- News articles will be dynamically populated here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="chatModalLabel">Chat with AI</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Chatbox content will be loaded here -->
+                    <div id="chatbox">
+                        <!-- Chat messages will be displayed here -->
+                        <div id="chatLog">
+                            <div class="message bot">This is a bot message</div>
+                            <div class="message user">This is a user message</div>
+                        </div>
+                        <!-- Buttons for analysis options -->
+                        <div class="analysis-buttons">
+                            <button type="button" id='anaNews' class="btn btn-secondary analyze-news">Analyze the
+                                news</button>
+                            <button type="button" id='anaCurr' class="btn btn-secondary analyze-currency">Analyze the
+                                currency</button>
+                        </div>
+                        <!-- Input field for user message -->
+                        <input type="text" id="userInput" class="form-control mt-3"
+                            placeholder="Type your message here...">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="sendMessageButton">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and jQuery (required for Bootstrap) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <script type="text/javascript" src="{{ url_for('static', filename = 'home.js') }}"></script>
+</body>
+
+</html>
